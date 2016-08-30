@@ -1,23 +1,15 @@
-{% load i18n static %}<!DOCTYPE html>
-
-{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
-
-<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta charset="utf-8" />
-
-<title>{% block title %}{% endblock %}</title>
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}" />
-{% block extrastyle %}{% endblock %}
-{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
-
-
-
+<title>Restaurant King</title>
+<meta charset="utf-8">
 </head>
 <body>
-{# 这是一个  注释 #}
-new web site
-这是个 新的 site 
-
+<h2>歡迎來到餐廳王</h2>
+{% if request.user.is_authenticated %}
+<p>{{request.user}} 您已經登入囉</p>
+<a href="/restaurants_list/">餐廳列表</a>
+{% else %}
+<p>您尚未登入喔~<a href="/wvpn/login/">登入</a></p>
+{% endif %}
+</body>
 </html>
