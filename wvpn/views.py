@@ -64,4 +64,4 @@ def login(request):
         index_path = reverse('wvpn:index', current_app=app_name)
         return HttpResponseRedirect(index_path)
     else:
-        return render_to_response('login_register_modal')
+        return render_to_response('login_register_modal.html')
