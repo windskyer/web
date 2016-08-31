@@ -10,6 +10,7 @@ from django.shortcuts import HttpResponseRedirect, render_to_response
 from django.contrib import auth
 from django.template.response import TemplateResponse
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.utils.translation import ugettext as _, ugettext_lazy
 
 
 
