@@ -8,6 +8,8 @@ from django.urls import NoReverseMatch, reverse
 from django.views.decorators.cache import never_cache
 from django.shortcuts import HttpResponseRedirect, render_to_response
 from django.contrib import auth
+from django.template.response import TemplateResponse
+
 
 
 app_name = 'wvpn'
@@ -51,7 +53,10 @@ def logout(request):
     return HttpResponseRedirect(index_path)
 # return HttpResponse("Hello  logout world!")
 
-def login(request):
+def login(request, extra_context=None):
+    """
+        Displays the login form for the given HttpRequest.
+    """
     if request.method == 'GET' and has_permission(request):
         index_path = reverse('wvpn:index', current_app=app_name)
         return HttpResponseRedirect(index_path)
@@ -64,4 +69,4 @@ def login(request):
         index_path = reverse('wvpn:index', current_app=app_name)
         return HttpResponseRedirect(index_path)
     else:
-        return render_to_response('login_register_modal.html')
+        return TemplateResponse(request, "login.html", extra_context)
