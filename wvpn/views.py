@@ -9,6 +9,8 @@ from django.views.decorators.cache import never_cache
 from django.shortcuts import HttpResponseRedirect, render_to_response
 from django.contrib import auth
 from django.template.response import TemplateResponse
+from django.contrib.auth import REDIRECT_FIELD_NAME
+
 
 
 
@@ -68,5 +70,27 @@ def login(request, extra_context=None):
         auth.login(request, user)
         index_path = reverse('wvpn:index', current_app=app_name)
         return HttpResponseRedirect(index_path)
-    else:
-        return TemplateResponse(request, "login.html", extra_context)
+
+    from django.contrib.auth.views import login
+    # Since this module gets imported in the application's root package,
+    # it cannot import models from other applications at the module level,
+    # and django.contrib.admin.forms eventually imports User.
+    from django.contrib.admin.forms import AdminAuthenticationForm
+    context = dict(
+        #    self.each_context(request),
+        title=_('Log in'),
+        app_path=request.get_full_path(),
+        username=request.user.get_username(),
+    )
+    if (REDIRECT_FIELD_NAME not in request.GET and
+        REDIRECT_FIELD_NAME not in request.POST):
+        context[REDIRECT_FIELD_NAME] = reverse('wvpn:index', current_app='wvpn')
+    context.update(extra_context or {})
+
+    defaults = {
+        'extra_context': context,
+        'authentication_form': AdminAuthenticationForm,
+        'template_name': 'login.html',
+    }
+    request.current_app = "wvpn"
+    return login(request, **defaults)
