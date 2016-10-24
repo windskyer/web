@@ -57,6 +57,7 @@ def logout(request):
 # return HttpResponse("Hello  logout world!")
 
 def login(request, extra_context=None):
+    import pdb;pdb.set_trace()
     """
         Displays the login form for the given HttpRequest.
     """
@@ -65,6 +66,8 @@ def login(request, extra_context=None):
         return HttpResponseRedirect(index_path)
 
     username = request.POST.get('username', '')
+    if not username:
+        username = request.POST.get('email')
     password = request.POST.get('password', '')
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
@@ -86,6 +89,7 @@ def login(request, extra_context=None):
     if (REDIRECT_FIELD_NAME not in request.GET and
         REDIRECT_FIELD_NAME not in request.POST):
         context[REDIRECT_FIELD_NAME] = reverse('wvpn:index', current_app='wvpn')
+
     context.update(extra_context or {})
 
     defaults = {
